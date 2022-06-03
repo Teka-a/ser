@@ -1,5 +1,6 @@
 #include "form_statistic_teacher.h"
 #include "ui_form_statistic_teacher.h"
+#include "back_func.h"
 
 Form_statistic_teacher::Form_statistic_teacher(QWidget *parent) :
     QWidget(parent),
@@ -17,3 +18,10 @@ Form_statistic_teacher::~Form_statistic_teacher()
 {
     delete ui;
 }
+
+void Form_statistic_teacher::on_pushButton_clicked()
+{
+    QString group_num = ui->lineEdit->text();
+    check_access(group_num);
+}
+

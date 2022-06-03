@@ -13,13 +13,15 @@ QString lognow;
  */
 myfunctions::~myfunctions()
 {
-    if (db.open()){
-        db.close();
+    /*
+    if (db->open()){
+        db->close();
         qDebug() << "closed";
     }
     else{
         qDebug() << "already closed";
     }
+    */
 }
 
 /**
@@ -27,16 +29,8 @@ myfunctions::~myfunctions()
  */
 myfunctions::myfunctions()
 {
-    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName("D:/ProgTech/DataBase/USG.db");
-    //"D:\ProgTech\DataBase\ForUser.db"
-    //db.setDatabaseName("D:/ProgTech/DataBase/build-DataBase-Desktop_Qt_6_2_3_MSVC2019_64bit-Debug/ForUsers.db");
-    if (!db.open()){
-        qDebug() << "nope";
-    }
-    else{
-        qDebug() << "ok";
-    }
+    singleton_db *db = singleton_db::getInstance();
+
 }
 /**
  * @brief 1. Выполняем запрос по поиску имени пользователя в базе данных.
@@ -48,15 +42,17 @@ myfunctions::myfunctions()
  * @return статус попытки входа в аккаунт ("Welcome! "/"Wrong username or password! ")
  */
 QString myfunctions::auth(QString login, QString password){
+    singleton_db *db = singleton_db::getInstance();
     QString log_from_db, pass_from_db, status_from_db;
-
-    QSqlQuery query(db);
+    qDebug() << "authentication";
+    QSqlQuery query;
     //1.
     query.prepare("SELECT * FROM User "
                "WHERE login == :login");
     query.bindValue(":login",login);
     query.exec();
-
+    qDebug() << login;
+    qDebug() << password;
     QSqlRecord rec = query.record();
     const int loginIndex = rec.indexOf("login");
     const int passwordIndex = rec.indexOf("password");
@@ -90,7 +86,8 @@ QString myfunctions::auth(QString login, QString password){
  * @return статус регистрации ("This username is already used!"/"You have been successfully registered! "/"You are not registered! ")
  */
 QString myfunctions::reg(QString login, QString password, QString email, QString status, QString name, QString surname){
-    QSqlQuery query(db);
+    singleton_db *db = singleton_db::getInstance();
+    QSqlQuery query;
     QString stat = "You are not registered! ";
     //1.
     QString log_from_db, pass_from_db, email_from_db, status_from_db, name_from_db, surname_from_db;
@@ -153,7 +150,8 @@ QString myfunctions::reg(QString login, QString password, QString email, QString
 }
 
 QString myfunctions::updStat(QString login, QString task_num, QString status_of_task){
-    QSqlQuery query(db);
+    singleton_db *db = singleton_db::getInstance();
+    QSqlQuery query;
     int task = task_num.toInt();
     qDebug() << login;
     switch(task){
@@ -186,7 +184,8 @@ QString myfunctions::updStat(QString login, QString task_num, QString status_of_
 }
 
 QString myfunctions::get_stat (QString task_num){
-    QSqlQuery query(db);
+    singleton_db *db = singleton_db::getInstance();
+    QSqlQuery query;
 
     QString name_from_db, task1_from_db, task2_from_db, task3_from_db, stat;
 
@@ -257,8 +256,9 @@ QString myfunctions::decrypt(QString toDecrypt)
 */
 
 QString myfunctions::get_login(QString name, QString surname){
+    singleton_db *db = singleton_db::getInstance();
     QString login = " ";
-    QSqlQuery query(db);
+    QSqlQuery query;
     //1.
     query.prepare("SELECT login FROM User "
                "WHERE name == :name AND surname == :surname");
@@ -280,8 +280,11 @@ QString myfunctions::get_login(QString name, QString surname){
 QString myfunctions::add_group(QString group_num, QString log_p1, QString log_p2, QString log_p3,
                                QString log_p4, QString log_p5, QString log_p6, QString log_p7,
                                QString log_p8, QString log_p9, QString teacher){
+    singleton_db *db = singleton_db::getInstance();
     QString status = "probably has been updated";
-    QSqlQuery query(db);
+    QSqlQuery query;
+    //добавить проверку наличия номера группы в бд. Если есть - удалить предыдущую запись и вставить новую
+
     query.prepare("INSERT INTO groups(group_num, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10) "
                       "VALUES (:group_num, :p1, :p2, :p3, :p4, :p5, :p6, :p7, :p8, :p9, :p10)");
     query.bindValue(":group_num", group_num);
@@ -298,6 +301,29 @@ QString myfunctions::add_group(QString group_num, QString log_p1, QString log_p2
     query.exec();
 
 
+    return status;
+}
+
+QString myfunctions::check_access(QString group_num){
+    singleton_db *db = singleton_db::getInstance();
+    //qDebug() << teacher << group_num;
+    QString group_from_db;
+    QString status = "not allowed";
+    QSqlQuery query;
+
+    query.prepare("SELECT group_num FROM groups "
+                  "WHERE p10 == :p10");
+    query.bindValue(":p10", lognow);
+    query.exec();
+    QSqlRecord rec = query.record();
+    qDebug() << rec;
+    const int groupIndex = rec.indexOf("group_num");
+    while(query.next())
+        group_from_db = query.value(groupIndex).toString();
+    qDebug()<<group_from_db << "\n";
+    if (group_num == group_from_db){
+        status = "allowed";
+    }
     return status;
 }
 
@@ -319,19 +345,20 @@ QString myfunctions::parsing(QString data_from_client){
     //qDebug() << "data client 1:" << data_from_client;
     //if (data_from_client.endsWith("=="))
     data_from_client = decrypt(data_from_client);
-    //qDebug() << "data client" << data_from_client;
-    QString student_name = "";
-    QString teacher_name = "";
+    qDebug() << "data client" << data_from_client;
+    //QString student_name = "";
+    //QString teacher_name = "";
 
     QStringList list = data_from_client.split("&", QString::SplitBehavior::SkipEmptyParts);
     //2.
     if (list[0] == "auth"){
-        if (auth(list[1], list[2]) == "Welcome! student"){
+        /*if (auth(list[1], list[2]) == "Welcome! student"){
             lognow = list[1];
         }
         else if (auth(list[1], list[2]) == "Welcome! teacher"){
             lognow = list[1];
-        }
+        }*/
+        lognow = list[1];
         return auth(list[1], list[2]);
     }
     else if (list[0] == "reg"){
@@ -354,6 +381,10 @@ QString myfunctions::parsing(QString data_from_client){
         return add_group(list[1], get_login(list[2], list[3]), get_login(list[4], list[5]), get_login(list[6], list[7]),
                 get_login(list[8], list[9]), get_login(list[10], list[11]), get_login(list[12], list[13]), get_login(list[14], list[15]),
                 get_login(list[16], list[17]), get_login(list[18], list[19]), lognow);
+    }
+    else if(list[0] == "check_access"){
+        qDebug() << "check_access";
+        return check_access(list[1]);
     }
     return "Error ";
 

@@ -6,11 +6,13 @@
 #include <QSqlError>
 #include <QSqlRecord>
 
+#include "singleton_db.h"
+
 
 class myfunctions
 {
 private:
-    QSqlDatabase db;
+    QSqlDatabase *db;
 public:
     myfunctions();
     ~myfunctions();
@@ -45,6 +47,7 @@ public:
                       QString log_p4, QString log_p5, QString log_p6, QString log_p7,
                       QString log_p8, QString log_p9, QString teacher);
     QString get_login(QString name, QString surname);
+    QString check_access(QString group_num);
 };
 
 #endif // MYFUNCTIONS_H

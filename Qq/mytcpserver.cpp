@@ -77,7 +77,7 @@ void MyTcpServer::slotServerRead(){
         QByteArray array = mTcpSocket->readAll();
         res.append(array);
     }
-    //qDebug() << f.parsing(res) << " encrypted " << f.encrypt(f.parsing(res));
+    //qDebug() << f.encrypt(f.parsing(res));
     mTcpSocket->write(f.encrypt(f.parsing(res)).toUtf8());
     //mTcpSocket->write(f.parsing(res).toUtf8());
 

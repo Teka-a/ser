@@ -15,6 +15,9 @@ public:
     explicit Form_statistic_teacher(QWidget *parent = nullptr);
     ~Form_statistic_teacher();
 
+private slots:
+    void on_pushButton_clicked();
+
 private:
     Ui::Form_statistic_teacher *ui;
 };

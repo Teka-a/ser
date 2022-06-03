@@ -63,6 +63,12 @@ void new_group(QString group_num, QString n1, QString s1, QString n2, QString s2
     client::getInstance()->sendToServer(res);
 }
 
+void check_access(QString group_num){
+    QString res = "&check_access&" + group_num + "&";
+    qDebug() << res;
+    client::getInstance()->sendToServer(res);
+}
+
 /**
  * @brief автоматическое решение задания 1
  * @param input
