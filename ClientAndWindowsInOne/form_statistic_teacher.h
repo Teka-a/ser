@@ -23,6 +23,7 @@ private slots:
 private:
     Ui::Form_statistic_teacher *ui;
     not_allowed *not_all;
+    QString group_num;
 };
 
 #endif // FORM_STATISTIC_TEACHER_H

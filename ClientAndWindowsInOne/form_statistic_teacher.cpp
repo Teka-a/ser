@@ -25,7 +25,10 @@ Form_statistic_teacher::~Form_statistic_teacher()
 
 
 void Form_statistic_teacher::show_statistic(){
-
+    QString f = get_info(group_num, "1");
+    qDebug() << "this one here" << f;
+    ui->tableWidget->setVisible(true);
+    //connect(client::getInstance(),&client::info,this, &Form_statistic_teacher::show_statistic);
 }
 
 void Form_statistic_teacher::no_access(){
@@ -37,7 +40,7 @@ void Form_statistic_teacher::no_access(){
 void Form_statistic_teacher::on_pushButton_clicked()
 {
     ui->label_2->setVisible(false);
-    QString group_num = ui->lineEdit->text();
+    group_num = ui->lineEdit->text();
     if(group_num.length() == 7){
         check_access(group_num);
         connect(client::getInstance(),&client::allowed,this, &Form_statistic_teacher::show_statistic);

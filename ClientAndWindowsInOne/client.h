@@ -9,6 +9,7 @@
 #include <QString>
 #include <QObject>
 #include <QTcpSocket>
+#include <QStringList>
 
 //#include "clientfunctions.h"
 
@@ -62,8 +63,9 @@ signals:
     void not_yet_3();
     void allowed();
     void not_allow();
+    void info(QStringList);
     public slots:
-        void slotServerRead();
+        QString slotServerRead();
 };
 
 #endif // CLIENT_H

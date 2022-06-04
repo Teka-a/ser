@@ -90,5 +90,6 @@ QString gen_task3();
 bool check_task(int task_num, QVector<QString> ans, QString input);
 
 void check_access(QString group_num);
+QString get_info(QString group, QString p);
 
 #endif // BACK_FUNC_H

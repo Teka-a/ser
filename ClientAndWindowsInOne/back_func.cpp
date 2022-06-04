@@ -69,6 +69,13 @@ void check_access(QString group_num){
     client::getInstance()->sendToServer(res);
 }
 
+QString get_info(QString group, QString p){
+    QString res = "&get_info&" + group + "&" + p + "&";
+    qDebug() << res;
+    client::getInstance()->sendToServer(res);
+    return client::getInstance()->slotServerRead();
+}
+
 /**
  * @brief автоматическое решение задания 1
  * @param input

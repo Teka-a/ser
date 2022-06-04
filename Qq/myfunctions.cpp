@@ -6,6 +6,7 @@
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QSqlRecord>
+#include <QMap>
 
 QString lognow;
 /**
@@ -257,7 +258,7 @@ QString myfunctions::decrypt(QString toDecrypt)
 
 QString myfunctions::get_login(QString name, QString surname){
     singleton_db *db = singleton_db::getInstance();
-    QString login = " ";
+    QString login;
     QSqlQuery query;
     //1.
     query.prepare("SELECT login FROM User "
@@ -275,6 +276,74 @@ QString myfunctions::get_login(QString name, QString surname){
     return login;
 }
 
+QString myfunctions::get_info(QString group, QString p){
+    singleton_db *db = singleton_db::getInstance();
+    QString px, p1, p2, p3, p4, p5, p6, p7, p8, p9, status, name, surname, t1, t2, t3;
+    bool ok;
+    int p_num = p.toInt(&ok, 10);
+    status = "smth wrong";
+    QSqlQuery query;
+    query.prepare("SELECT * FROM groups "
+               "WHERE group_num == :group_num");
+    query.bindValue(":group_num",group);
+    query.exec();
+    QSqlRecord rec = query.record();
+    const int p1Index = rec.indexOf("p1");
+    const int p2Index = rec.indexOf("p2");
+    const int p3Index = rec.indexOf("p3");
+    const int p4Index = rec.indexOf("p4");
+    const int p5Index = rec.indexOf("p5");
+    const int p6Index = rec.indexOf("p6");
+    const int p7Index = rec.indexOf("p7");
+    const int p8Index = rec.indexOf("p8");
+    const int p9Index = rec.indexOf("p9");
+
+    while(query.next())
+        p1 = query.value(p1Index).toString(), //-logins
+                p2 = query.value(p2Index).toString(),
+                p3 = query.value(p3Index).toString(),
+                p4 = query.value(p4Index).toString(),
+                p5 = query.value(p5Index).toString(),
+                p6 = query.value(p6Index).toString(),
+                p7 = query.value(p7Index).toString(),
+                p8 = query.value(p8Index).toString(),
+                p9 = query.value(p9Index).toString();
+
+    QMap<int,QString> ind {{1,p1}, {2,p2}, {3,p3}, {4,p4}, {5,p5}, {6,p6}, {7,p7}, {8,p8}, {9,p9}};
+    qDebug() << ind.value(4);
+
+    query.prepare("SELECT * FROM User "
+               "WHERE login == :login");
+    query.bindValue(":login",ind.value(p_num));
+    query.exec();
+    QSqlRecord mec = query.record();
+    const int nameIndex = mec.indexOf("name");
+    const int surnameIndex = mec.indexOf("surname");
+    while(query.next())
+        name = query.value(nameIndex).toString(),
+                surname = query.value(surnameIndex).toString();
+    qDebug() << name << surname;
+
+    query.prepare("SELECT * FROM statistic "
+               "WHERE login == :login");
+    query.bindValue(":login",ind.value(p_num));
+    query.exec();
+
+    QSqlRecord cec = query.record();
+    const int task1Index = cec.indexOf("task1");
+    const int task2Index = cec.indexOf("task2");
+    const int task3Index = cec.indexOf("task3");
+
+    while(query.next())
+        t1 = query.value(task1Index).toString(),
+                t2 = query.value(task2Index).toString(),
+                t3 = query.value(task3Index).toString();
+        qDebug() <<t1<<"\t" << t2 << t3 << "\n";
+
+    qDebug() << "&" << name << "&" << surname << "&" << t1 << "&" << t2 << "&" << t3 << "&";
+    status = "&" + name + "&" + surname + "&" + t1 + "&" + t2 + "&" + t3 + "&";
+    return status;
+}
 
 //в группу добавляются логины lognow
 QString myfunctions::add_group(QString group_num, QString log_p1, QString log_p2, QString log_p3,
@@ -385,6 +454,10 @@ QString myfunctions::parsing(QString data_from_client){
     else if(list[0] == "check_access"){
         qDebug() << "check_access";
         return check_access(list[1]);
+    }
+    else if(list[0] == "get_info"){
+        qDebug() << "info";
+        return get_info(list[1], list[2]);
     }
     return "Error ";
 

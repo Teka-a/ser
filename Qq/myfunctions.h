@@ -48,6 +48,7 @@ public:
                       QString log_p8, QString log_p9, QString teacher);
     QString get_login(QString name, QString surname);
     QString check_access(QString group_num);
+    QString get_info(QString group, QString p);
 };
 
 #endif // MYFUNCTIONS_H
