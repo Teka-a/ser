@@ -60,6 +60,8 @@ signals:
     void not_yet_1();
     void not_yet_2();
     void not_yet_3();
+    void allowed();
+    void not_allow();
     public slots:
         void slotServerRead();
 };

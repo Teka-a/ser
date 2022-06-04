@@ -108,5 +108,11 @@ void client::slotServerRead(){
         else if (array == "3&not solved yet"){
             emit not_yet_3();
         }
+        else if (array == "allowed"){
+            emit allowed();
+        }
+        else if (array == "not allowed"){
+            emit not_allow();
+        }
     }
 }

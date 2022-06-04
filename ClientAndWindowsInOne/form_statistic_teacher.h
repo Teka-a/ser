@@ -1,6 +1,6 @@
 #ifndef FORM_STATISTIC_TEACHER_H
 #define FORM_STATISTIC_TEACHER_H
-
+#include "not_allowed.h"
 #include <QWidget>
 
 namespace Ui {
@@ -17,9 +17,12 @@ public:
 
 private slots:
     void on_pushButton_clicked();
+    void no_access();
+    void show_statistic();
 
 private:
     Ui::Form_statistic_teacher *ui;
+    not_allowed *not_all;
 };
 
 #endif // FORM_STATISTIC_TEACHER_H

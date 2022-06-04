@@ -99,8 +99,8 @@
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>220</x>
-     <y>20</y>
+     <x>20</x>
+     <y>15</y>
      <width>101</width>
      <height>20</height>
     </rect>
@@ -112,8 +112,8 @@
   <widget class="QLineEdit" name="lineEdit">
    <property name="geometry">
     <rect>
-     <x>340</x>
-     <y>15</y>
+     <x>140</x>
+     <y>10</y>
      <width>71</width>
      <height>28</height>
     </rect>
@@ -131,14 +131,27 @@
   <widget class="QPushButton" name="pushButton">
    <property name="geometry">
     <rect>
-     <x>430</x>
-     <y>15</y>
+     <x>230</x>
+     <y>10</y>
      <width>101</width>
      <height>29</height>
     </rect>
    </property>
    <property name="text">
     <string>Load statistic</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>370</x>
+     <y>15</y>
+     <width>91</width>
+     <height>18</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Wrong input!</string>
    </property>
   </widget>
  </widget>

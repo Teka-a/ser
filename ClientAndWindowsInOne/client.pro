@@ -21,6 +21,7 @@ SOURCES += \
     form_task.cpp \
     main.cpp \
     mainwindow.cpp \
+    not_allowed.cpp \
     wrong_form.cpp
 
 HEADERS += \
@@ -33,6 +34,7 @@ HEADERS += \
     form_statistic_teacher.h \
     form_task.h \
     mainwindow.h \
+    not_allowed.h \
     wrong_form.h
 
 FORMS += \
@@ -43,6 +45,7 @@ FORMS += \
     form_statistic_teacher.ui \
     form_task.ui \
     mainwindow.ui \
+    not_allowed.ui \
     wrong_form.ui
 
 # Default rules for deployment.
