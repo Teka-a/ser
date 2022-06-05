@@ -69,12 +69,14 @@ void check_access(QString group_num){
     client::getInstance()->sendToServer(res);
 }
 
-QString get_info(QString group, QString p){
-    QString res = "&get_info&" + group + "&" + p + "&";
+void get_info(QString group){
+    QString res = "&get_info&" + group + "&";
     qDebug() << res;
     client::getInstance()->sendToServer(res);
-    return client::getInstance()->slotServerRead();
+
+    //return res;
 }
+
 
 /**
  * @brief автоматическое решение задания 1

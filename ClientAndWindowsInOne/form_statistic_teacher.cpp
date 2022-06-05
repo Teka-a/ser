@@ -12,7 +12,6 @@ Form_statistic_teacher::Form_statistic_teacher(QWidget *parent) :
     ui->setupUi(this);
     ui->tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->tableWidget->setSelectionMode(QAbstractItemView::NoSelection);
-    ui->tableWidget->setItem(0, 0, new QTableWidgetItem("Hello"));
     ui->lineEdit->setFocus(Qt::TabFocusReason);
     ui->tableWidget->setVisible(false);
     ui->label_2->setVisible(false);
@@ -20,19 +19,32 @@ Form_statistic_teacher::Form_statistic_teacher(QWidget *parent) :
 
 Form_statistic_teacher::~Form_statistic_teacher()
 {
+    ui->tableWidget->setVisible(false);
     delete ui;
 }
 
+void Form_statistic_teacher::pars(QString data){
+    ui->tableWidget->setVisible(true);
+    QStringList list = data.split("Q", QString::SplitBehavior::SkipEmptyParts);
+    for (int j = 0; j < list.size(); ++j){
+        QStringList now = list[j].split("&", QString::SplitBehavior::SkipEmptyParts);
+        //qDebug() << j << now;
+        for (int i = 0; i < now.size(); ++i){
+            //qDebug() << now[i];
+            ui->tableWidget->setItem(j, i, new QTableWidgetItem(now[i]));
+
+        }
+    }
+}
 
 void Form_statistic_teacher::show_statistic(){
-    QString f = get_info(group_num, "1");
-    qDebug() << "this one here" << f;
     ui->tableWidget->setVisible(true);
-    //connect(client::getInstance(),&client::info,this, &Form_statistic_teacher::show_statistic);
+
+    get_info(group_num);
+    connect(client::getInstance(),&client::get_it,this, &Form_statistic_teacher::pars);
 }
 
 void Form_statistic_teacher::no_access(){
-    //qDebug() << "notnotont";
     not_all->show();
     ui->lineEdit->setText("");
 }

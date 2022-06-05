@@ -56,7 +56,10 @@ void client::sendToServer(QString message){
     //mTcpSocket->write(message.toUtf8());
 }
 
-QString client::slotServerRead(){
+
+
+
+void client::slotServerRead(){
     QString array = "";
     while(mTcpSocket->bytesAvailable()>0)
     {
@@ -66,8 +69,9 @@ QString client::slotServerRead(){
         array.append(res);
         array = decrypt(array);
         //mTcpSocket->write(array);
-        qDebug()<< array;
-        //QStringList list = array.split("&", QString::SplitBehavior::SkipEmptyParts);
+        //qDebug()<< array;
+        QStringList list = array.split("&", QString::SplitBehavior::SkipEmptyParts);
+
         if (array == "Welcome! student"){
             emit log_in_as_student();
         }
@@ -116,7 +120,21 @@ QString client::slotServerRead(){
         else if (array == "not allowed"){
             emit not_allow();
         }
+        else if (list.size() > 5){
+            //nfo = array;
+            //qDebug()<< array;
+
+            //Form_statistic_teacher f;
+            //f.pars(array);
+            emit get_it(array);
+        }
 
     }
-    return array;
+
+}
+
+QString client::tell_me(){
+    qDebug() << "herrr";
+    qDebug() << info;
+    return info;
 }

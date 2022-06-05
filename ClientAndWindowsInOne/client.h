@@ -11,7 +11,7 @@
 #include <QTcpSocket>
 #include <QStringList>
 
-//#include "clientfunctions.h"
+#include "form_statistic_teacher.h"
 
 class client;
 
@@ -32,6 +32,8 @@ class client: public QObject
         static client * p_instance;
         static clientDestroyer destroyer;
         static QTcpSocket * mTcpSocket;
+        Form_statistic_teacher *f_t;
+
     protected:
          client(QObject *parent = nullptr);
         ~client();
@@ -46,6 +48,9 @@ class client: public QObject
         static client* getInstance();
         //explicit MyTcpServer(QObject *parent = nullptr);
         void sendToServer(QString message);
+        QString tell_me();
+        QString info;
+
 signals:
     void log_in_as_student();
     void log_in_as_teacher();
@@ -63,9 +68,9 @@ signals:
     void not_yet_3();
     void allowed();
     void not_allow();
-    void info(QStringList);
+    void get_it(QString g);
     public slots:
-        QString slotServerRead();
+    void slotServerRead();
 };
 
 #endif // CLIENT_H

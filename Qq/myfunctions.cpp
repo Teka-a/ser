@@ -276,12 +276,11 @@ QString myfunctions::get_login(QString name, QString surname){
     return login;
 }
 
-QString myfunctions::get_info(QString group, QString p){
+QString myfunctions::get_info(QString group){
     singleton_db *db = singleton_db::getInstance();
     QString px, p1, p2, p3, p4, p5, p6, p7, p8, p9, status, name, surname, t1, t2, t3;
-    bool ok;
-    int p_num = p.toInt(&ok, 10);
-    status = "smth wrong";
+
+    status = "";
     QSqlQuery query;
     query.prepare("SELECT * FROM groups "
                "WHERE group_num == :group_num");
@@ -311,37 +310,51 @@ QString myfunctions::get_info(QString group, QString p){
 
     QMap<int,QString> ind {{1,p1}, {2,p2}, {3,p3}, {4,p4}, {5,p5}, {6,p6}, {7,p7}, {8,p8}, {9,p9}};
     qDebug() << ind.value(4);
+    for (int i = 1; i < 10; ++i){
 
-    query.prepare("SELECT * FROM User "
-               "WHERE login == :login");
-    query.bindValue(":login",ind.value(p_num));
-    query.exec();
-    QSqlRecord mec = query.record();
-    const int nameIndex = mec.indexOf("name");
-    const int surnameIndex = mec.indexOf("surname");
-    while(query.next())
-        name = query.value(nameIndex).toString(),
-                surname = query.value(surnameIndex).toString();
-    qDebug() << name << surname;
+        qDebug() << ind.value(i);
+        if(ind.value(i) != " "){
+            query.prepare("SELECT * FROM User "
+                       "WHERE login == :login");
+            query.bindValue(":login",ind.value(i));
+            query.exec();
+            QSqlRecord mec = query.record();
+            const int nameIndex = mec.indexOf("name");
+            const int surnameIndex = mec.indexOf("surname");
+            while(query.next())
+                name = query.value(nameIndex).toString(),
+                        surname = query.value(surnameIndex).toString();
+            qDebug() << name << surname;
 
-    query.prepare("SELECT * FROM statistic "
-               "WHERE login == :login");
-    query.bindValue(":login",ind.value(p_num));
-    query.exec();
+            query.prepare("SELECT * FROM statistic "
+                       "WHERE login == :login");
+            query.bindValue(":login",ind.value(i));
+            query.exec();
 
-    QSqlRecord cec = query.record();
-    const int task1Index = cec.indexOf("task1");
-    const int task2Index = cec.indexOf("task2");
-    const int task3Index = cec.indexOf("task3");
+            QSqlRecord cec = query.record();
+            const int task1Index = cec.indexOf("task1");
+            const int task2Index = cec.indexOf("task2");
+            const int task3Index = cec.indexOf("task3");
 
-    while(query.next())
-        t1 = query.value(task1Index).toString(),
-                t2 = query.value(task2Index).toString(),
-                t3 = query.value(task3Index).toString();
-        qDebug() <<t1<<"\t" << t2 << t3 << "\n";
+            while(query.next())
+                t1 = query.value(task1Index).toString(),
+                        t2 = query.value(task2Index).toString(),
+                        t3 = query.value(task3Index).toString();
+                qDebug() <<t1<<"\t" << t2 << t3 << "\n";
+        }
+        else{
+            name = " ";
+            surname = " ";
+            t1 = " ";
+            t2 = " ";
+            t3 = " ";
+        }
 
-    qDebug() << "&" << name << "&" << surname << "&" << t1 << "&" << t2 << "&" << t3 << "&";
-    status = "&" + name + "&" + surname + "&" + t1 + "&" + t2 + "&" + t3 + "&";
+        status += "&" + name + "&" + surname + "&" + t1 + "&" + t2 + "&" + t3 + "&" + "Q";
+    }
+
+    qDebug() << status;
+
     return status;
 }
 
@@ -457,7 +470,7 @@ QString myfunctions::parsing(QString data_from_client){
     }
     else if(list[0] == "get_info"){
         qDebug() << "info";
-        return get_info(list[1], list[2]);
+        return get_info(list[1]);
     }
     return "Error ";
 

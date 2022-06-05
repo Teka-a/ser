@@ -26,7 +26,7 @@ singleton_db::singleton_db()
 {
     qDebug() << "constructor";
     db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName("/home/kali/prog/ser/db/USG.db");
+    db.setDatabaseName("/home/acer/prog/ser/db/USG.db");
 
     if (!db.open()){
         qDebug() << "nope";
