@@ -2,6 +2,7 @@
 #define BACK_FUNC_H
 #include "client.h"
 #include <QString>
+#include <QtNetwork>
 /**
  * @brief Функция авторизации по логину и паролю от пользователя
  * @param log

@@ -11,7 +11,7 @@
 #include <QTcpSocket>
 #include <QStringList>
 
-#include "form_statistic_teacher.h"
+//#include "form_statistic_teacher.h"
 
 class client;
 
@@ -32,7 +32,7 @@ class client: public QObject
         static client * p_instance;
         static clientDestroyer destroyer;
         static QTcpSocket * mTcpSocket;
-        Form_statistic_teacher *f_t;
+        //Form_statistic_teacher *f_t;
 
     protected:
          client(QObject *parent = nullptr);
