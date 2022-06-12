@@ -121,20 +121,18 @@ void client::slotServerRead(){
             emit not_allow();
         }
         else if (list.size() > 5){
-            //nfo = array;
-            //qDebug()<< array;
-
-            //Form_statistic_teacher f;
-            //f.pars(array);
             emit get_it(array);
+        }
+        else if (list[0] == "i_student"){
+            emit student(list[1]);
+        }
+        else if (list[0] == "i_teacher"){
+            emit teacher(list[1]);
+        }
+        else if (list[0] == "i_group"){
+            emit group(list[1]);
         }
 
     }
 
-}
-
-QString client::tell_me(){
-    qDebug() << "herrr";
-    qDebug() << info;
-    return info;
 }

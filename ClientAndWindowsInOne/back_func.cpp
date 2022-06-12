@@ -64,19 +64,36 @@ void new_group(QString group_num, QString n1, QString s1, QString n2, QString s2
 }
 
 void check_access(QString group_num){
-    QString res = "&check_access&" + group_num + "&";
+    QString res = "check_access&" + group_num + "&";
     qDebug() << res;
     client::getInstance()->sendToServer(res);
 }
 
 void get_info(QString group){
-    QString res = "&get_info&" + group + "&";
+    QString res = "get_info&" + group + "&";
     qDebug() << res;
     client::getInstance()->sendToServer(res);
 
     //return res;
 }
 
+void get_student(){
+    QString res = "get_student&";
+    qDebug() << res;
+    client::getInstance()->sendToServer(res);
+}
+
+void get_teacher(){
+    QString res = "get_teacher&";
+    qDebug() << res;
+    client::getInstance()->sendToServer(res);
+}
+
+void get_group(){
+    QString res = "get_group&";
+    qDebug() << res;
+    client::getInstance()->sendToServer(res);
+}
 
 /**
  * @brief автоматическое решение задания 1

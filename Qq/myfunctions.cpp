@@ -309,11 +309,11 @@ QString myfunctions::get_info(QString group){
                 p9 = query.value(p9Index).toString();
 
     QMap<int,QString> ind {{1,p1}, {2,p2}, {3,p3}, {4,p4}, {5,p5}, {6,p6}, {7,p7}, {8,p8}, {9,p9}};
-    qDebug() << ind.value(4);
+    //qDebug() << ind.value(4);
     for (int i = 1; i < 10; ++i){
 
         qDebug() << ind.value(i);
-        if(ind.value(i) != " "){
+        if(ind.value(i) != ""){
             query.prepare("SELECT * FROM User "
                        "WHERE login == :login");
             query.bindValue(":login",ind.value(i));
@@ -358,15 +358,30 @@ QString myfunctions::get_info(QString group){
     return status;
 }
 
-//в группу добавляются логины lognow
+//в группу добавляются логины
 QString myfunctions::add_group(QString group_num, QString log_p1, QString log_p2, QString log_p3,
                                QString log_p4, QString log_p5, QString log_p6, QString log_p7,
                                QString log_p8, QString log_p9, QString teacher){
     singleton_db *db = singleton_db::getInstance();
     QString status = "probably has been updated";
+    QString group_from_db;
     QSqlQuery query;
     //добавить проверку наличия номера группы в бд. Если есть - удалить предыдущую запись и вставить новую
+    query.prepare("SELECT * FROM groups "
+                  "WHERE group_num == :group_num");
+    query.bindValue(":group_num", group_num);
+    query.exec();
+    QSqlRecord rec = query.record();
+    const int groupIndex = rec.indexOf("group_num");
 
+    while(query.next())
+        group_from_db = query.value(groupIndex).toString();
+    if (group_from_db == group_num){
+        query.prepare("DELETE FROM groups "
+                      "WHERE group_num == :group_num");
+        query.bindValue(":group_num", group_num);
+        query.exec();
+    }
     query.prepare("INSERT INTO groups(group_num, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10) "
                       "VALUES (:group_num, :p1, :p2, :p3, :p4, :p5, :p6, :p7, :p8, :p9, :p10)");
     query.bindValue(":group_num", group_num);
@@ -406,6 +421,76 @@ QString myfunctions::check_access(QString group_num){
     if (group_num == group_from_db){
         status = "allowed";
     }
+    return status;
+}
+
+QString myfunctions::get_student(){
+    singleton_db *db = singleton_db::getInstance();
+    QString name_from_db, surname_from_db;
+    QString status = "&i_student&";
+    QSqlQuery query;
+    query.prepare("SELECT * FROM User "
+                  "WHERE login == :login");
+    query.bindValue(":login", lognow);
+    query.exec();
+    QSqlRecord rec = query.record();
+
+    const int nameIndex = rec.indexOf("name");
+    const int surnameIndex = rec.indexOf("surname");
+    while(query.next())
+        name_from_db = query.value(nameIndex).toString(), surname_from_db = query.value(surnameIndex).toString();
+    status += name_from_db + " " + surname_from_db + "&";
+    qDebug() << "get_student" << status;
+    return status;
+}
+
+QString myfunctions::get_teacher(){
+    singleton_db *db = singleton_db::getInstance();
+    QString log_teacher_from_db, teacherName_from_db, teacherSurname_from_db;
+    QString status = "&i_teacher&";
+    QSqlQuery query;
+    query.prepare("SELECT p10 FROM groups "
+                  "WHERE p1 == :login OR p2 == :login OR p3 == :login OR p4 == :login OR p5 == :login OR p6 == :login OR p7 == :login OR p8 == :login OR p9 == :login");
+    query.bindValue(":login", lognow);
+    query.exec();
+    QSqlRecord rec = query.record();
+    qDebug() << rec;
+    const int teacherIndex = rec.indexOf("p10");
+
+    while(query.next())
+        log_teacher_from_db = query.value(teacherIndex).toString();
+
+    query.prepare("SELECT * FROM User "
+                  "WHERE login == :login");
+    query.bindValue(":login", log_teacher_from_db);
+    query.exec();
+    QSqlRecord rec1 = query.record();
+    qDebug() << rec;
+    const int nameIndex = rec1.indexOf("name");
+    const int surnameIndex = rec1.indexOf("surname");
+    while(query.next())
+        teacherName_from_db = query.value(nameIndex).toString(), teacherSurname_from_db = query.value(surnameIndex).toString();
+    status += teacherName_from_db + " " + teacherSurname_from_db + "&";
+    qDebug() << "get_teacher" << status;
+    return status;
+}
+
+QString myfunctions::get_group(){
+    singleton_db *db = singleton_db::getInstance();
+    QString group_from_db;
+    QString status = "&i_group&";
+    QSqlQuery query;
+    query.prepare("SELECT group_num FROM groups "
+                  "WHERE p1 == :login OR p2 == :login OR p3 == :login OR p4 == :login OR p5 == :login OR p6 == :login OR p7 == :login OR p8 == :login OR p9 == :login");
+    query.bindValue(":login", lognow);
+    query.exec();
+    QSqlRecord rec = query.record();
+    qDebug() << rec;
+    const int nameIndex = rec.indexOf("group_num");
+    while(query.next())
+        group_from_db = query.value(nameIndex).toString();
+    status += group_from_db + " &";
+    qDebug() << "get_group" << status;
     return status;
 }
 
@@ -453,7 +538,6 @@ QString myfunctions::parsing(QString data_from_client){
         qDebug() << "updStat";
         return updStat(lognow, list[1], list[2]);
     }
-    // если одинаковые имя и фамилия - спросить почту ученика
     else if (list[0] == "get_log"){
         qDebug() << "get_log" << list[1] << list[2];
         return get_login(list[1], list[2]);
@@ -471,6 +555,15 @@ QString myfunctions::parsing(QString data_from_client){
     else if(list[0] == "get_info"){
         qDebug() << "info";
         return get_info(list[1]);
+    }
+    else if(list[0] == "get_student"){
+        return get_student();
+    }
+    else if(list[0] == "get_teacher"){
+        return get_teacher();
+    }
+    else if(list[0] == "get_group"){
+        return get_group();
     }
     return "Error ";
 

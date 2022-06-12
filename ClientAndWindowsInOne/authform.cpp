@@ -20,7 +20,7 @@ void AuthForm::page(QString form){
 
         ui->radioButton_teacher->setVisible(true);
         ui->radioButton_student->setVisible(true);
-
+        ui->label_note->setVisible(true);
         ui->toolButtonback_to_auth->setVisible(true);
         ui->pushButton_reg->setVisible(false);
         ui->pushButton_ok->setVisible(true);
@@ -34,6 +34,7 @@ void AuthForm::page(QString form){
 
         ui->radioButton_teacher->setVisible(false);
         ui->radioButton_student->setVisible(false);
+        ui->label_note->setVisible(false);
 
         ui->toolButtonback_to_auth->setVisible(false);
         ui->pushButton_reg->setVisible(true);
@@ -83,6 +84,7 @@ AuthForm::~AuthForm()
 void AuthForm::success_log_as_student()
 {
     hide();
+    get_student();
     emit logged_in_success_as_student();
 }
 
@@ -134,7 +136,8 @@ void AuthForm::on_pushButton_ok_clicked()
         QString mymail = ui->lineEdit_3email->text();
         QString name = ui->lineEdit_4name->text();
         QString surname = ui->lineEdit_5surname->text();
-        if (log == "" || pass == "" || mymail == "" || name == "" || surname == ""){
+        if (log == "" || pass == "" || mymail == "" || name == "" || surname == ""
+                ||log.length() > 100 || pass.length() > 100 || mymail.length() > 100 || name.length() > 100 || surname.length() > 100){
             clean();
         }
         else{

@@ -48,8 +48,8 @@ class client: public QObject
         static client* getInstance();
         //explicit MyTcpServer(QObject *parent = nullptr);
         void sendToServer(QString message);
-        QString tell_me();
-        QString info;
+        //QString tell_me();
+        //QString info;
 
 signals:
     void log_in_as_student();
@@ -69,6 +69,9 @@ signals:
     void allowed();
     void not_allow();
     void get_it(QString g);
+    void group(QString group);
+    void teacher (QString teacher);
+    void student (QString student);
     public slots:
     void slotServerRead();
 };

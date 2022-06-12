@@ -39,7 +39,6 @@ void Form_statistic_teacher::pars(QString data){
 
 void Form_statistic_teacher::show_statistic(){
     ui->tableWidget->setVisible(true);
-
     get_info(group_num);
     connect(client::getInstance(),&client::get_it,this, &Form_statistic_teacher::pars);
 }
@@ -53,12 +52,16 @@ void Form_statistic_teacher::on_pushButton_clicked()
 {
     ui->label_2->setVisible(false);
     group_num = ui->lineEdit->text();
-    if(group_num.length() == 7){
+    QRegularExpression re("[1-9]{3}-[1-9]{3}");
+    QRegularExpressionMatch match = re.match(group_num);
+    if(match.hasMatch()){
+        qDebug() << "true";
         check_access(group_num);
         connect(client::getInstance(),&client::allowed,this, &Form_statistic_teacher::show_statistic);
         connect(client::getInstance(),&client::not_allow,this, &Form_statistic_teacher::no_access);
     }
     else{
+        qDebug() << "no";
         ui->label_2->setVisible(true);
         ui->lineEdit->setText("");
     }

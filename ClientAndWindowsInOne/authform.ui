@@ -114,6 +114,19 @@
     </item>
    </layout>
   </widget>
+  <widget class="QLabel" name="label_note">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>10</y>
+     <width>341</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Please, note: every field has a limit - 100 characters!</string>
+   </property>
+  </widget>
  </widget>
  <tabstops>
   <tabstop>lineEdit_2pass</tabstop>

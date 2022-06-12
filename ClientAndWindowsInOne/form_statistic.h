@@ -29,6 +29,9 @@ public:
     void n_task1();
     void n_task2();
     void n_task3();
+    void put_student(QString stud);
+    void put_teacher(QString teach);
+    void put_group(QString gr);
 
 private:
     Ui::form_statistic *ui;

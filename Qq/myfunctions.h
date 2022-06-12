@@ -49,6 +49,9 @@ public:
     QString get_login(QString name, QString surname);
     QString check_access(QString group_num);
     QString get_info(QString group);
+    QString get_teacher();
+    QString get_student();
+    QString get_group();
 };
 
 #endif // MYFUNCTIONS_H

@@ -92,6 +92,9 @@ bool check_task(int task_num, QVector<QString> ans, QString input);
 
 void check_access(QString group_num);
 void get_info(QString group);
+void get_student();
+void get_teacher();
+void get_group();
 //QString tell_inf();
 
 #endif // BACK_FUNC_H

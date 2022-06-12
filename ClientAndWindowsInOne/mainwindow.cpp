@@ -46,7 +46,7 @@ void MainWindow::teacher(){
     MainWindow::show();
     ui->pushButton_new_group->setVisible(true);
     qDebug() << "teacher";
-    get_stat(1);
+    //get_stat(1);
     status = "teacher";
     //stat_t->show();
 }

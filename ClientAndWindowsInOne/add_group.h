@@ -2,6 +2,8 @@
 #define ADD_GROUP_H
 #include "back_func.h"
 #include <QWidget>
+#include <QRegularExpression>
+#include <QRegularExpressionMatch>
 
 namespace Ui {
 class add_group;
@@ -14,6 +16,7 @@ class add_group : public QWidget
 public:
     explicit add_group(QWidget *parent = nullptr);
     ~add_group();
+    void clean();
 
 private slots:
     void on_pushButton_clicked();

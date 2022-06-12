@@ -4,6 +4,8 @@
 #include <QWidget>
 #include <QStringList>
 #include <QString>
+#include <QRegularExpression>
+#include <QRegularExpressionMatch>
 
 namespace Ui {
 class Form_statistic_teacher;
