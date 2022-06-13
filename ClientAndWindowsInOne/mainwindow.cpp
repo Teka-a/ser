@@ -206,6 +206,7 @@ void MainWindow::on_pushButton_stat_clicked()
    }
    else if (status == "student"){
        //qDebug() << "student";
+       get_student();
        stat_f->show();
    }
 }

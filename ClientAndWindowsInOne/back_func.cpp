@@ -43,6 +43,7 @@ void upd_stat(int n, QString upd){
 void get_stat(int n){
     QString res = "getStat&" + QString::number(n) + "&";
     //here
+    qDebug() << res;
     client::getInstance()->sendToServer(res);
 }
 
@@ -94,6 +95,7 @@ void get_group(){
     qDebug() << res;
     client::getInstance()->sendToServer(res);
 }
+
 
 /**
  * @brief автоматическое решение задания 1

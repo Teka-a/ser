@@ -22,7 +22,6 @@ public:
     explicit form_statistic(QWidget *parent = nullptr);
     ~form_statistic();
     void set_stat(QString status);
-    void zero_step();
     void task1();
     void task2();
     void task3();

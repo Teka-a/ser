@@ -52,6 +52,7 @@ public:
     QString get_teacher();
     QString get_student();
     QString get_group();
+    QString check_student(QString login);
 };
 
 #endif // MYFUNCTIONS_H

@@ -9,7 +9,7 @@ form_statistic::form_statistic(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    //get_stat(1);
+
     connect(client::getInstance(),&client::solved_1, this, &form_statistic::task1);
     connect(client::getInstance(),&client::solved_2, this, &form_statistic::task2);
     connect(client::getInstance(),&client::solved_3, this, &form_statistic::task3);
@@ -28,7 +28,7 @@ form_statistic::form_statistic(QWidget *parent) :
 }
 
 void form_statistic::put_student(QString stud){
-    qDebug() << "st + teach";
+
     ui->label_student->setText(stud);
     get_teacher();
 }
@@ -42,23 +42,14 @@ void form_statistic::put_group(QString gr){
     ui->label_group->setText(gr);
 }
 
-void form_statistic::zero_step(){
-    qDebug() << "zero_step";
-
-    //get_stat(1);
-
-
-}
-//up change color button
 void form_statistic::task1(){
     qDebug() << "2";
     ui->label_task_1->setText("+");
-    //get_stat(2);
+
 }
 
 void form_statistic::task2(){
     ui->label_task_2->setText("+");
-    //get_stat(3);
 }
 
 void form_statistic::task3(){
@@ -67,12 +58,12 @@ void form_statistic::task3(){
 
 void form_statistic::n_task1(){
     ui->label_task_1->setText("-");
-    //get_stat(2);
+
 }
 
 void form_statistic::n_task2(){
     ui->label_task_2->setText("-");
-    //get_stat(3);
+
 }
 
 void form_statistic::n_task3(){

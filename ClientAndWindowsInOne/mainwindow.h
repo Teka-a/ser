@@ -9,6 +9,7 @@
 #include "form_statistic.h"
 #include "form_statistic_teacher.h"
 #include "wrong_credentials.h"
+#include "cannot_change.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

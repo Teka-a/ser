@@ -132,6 +132,13 @@ void client::slotServerRead(){
         else if (list[0] == "i_group"){
             emit group(list[1]);
         }
+        else if (array == "you cannot change group!"){
+            qDebug() << "iuio";
+            emit you_cannot();
+        }
+        else if (array == "one of student exists"){
+            emit student_in_group();
+        }
 
     }
 

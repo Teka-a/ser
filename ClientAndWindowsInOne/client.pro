@@ -14,6 +14,7 @@ SOURCES += \
     add_group.cpp \
     authform.cpp \
     back_func.cpp \
+    cannot_change.cpp \
     client.cpp \
     exists_form.cpp \
     form_statistic.cpp \
@@ -28,6 +29,7 @@ HEADERS += \
     add_group.h \
     authform.h \
     back_func.h \
+    cannot_change.h \
     client.h \
     exists_form.h \
     form_statistic.h \
@@ -40,6 +42,7 @@ HEADERS += \
 FORMS += \
     add_group.ui \
     authform.ui \
+    cannot_change.ui \
     exists_form.ui \
     form_statistic.ui \
     form_statistic_teacher.ui \

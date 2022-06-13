@@ -72,6 +72,8 @@ signals:
     void group(QString group);
     void teacher (QString teacher);
     void student (QString student);
+    void you_cannot();
+    void student_in_group();
     public slots:
     void slotServerRead();
 };

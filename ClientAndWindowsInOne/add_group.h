@@ -1,8 +1,10 @@
 #ifndef ADD_GROUP_H
 #define ADD_GROUP_H
 #include "back_func.h"
+#include "cannot_change.h"
 #include <QWidget>
 #include <QRegularExpression>
+#include <QMap>
 #include <QRegularExpressionMatch>
 
 namespace Ui {
@@ -20,9 +22,11 @@ public:
 
 private slots:
     void on_pushButton_clicked();
+    void no_changes();
 
 private:
     Ui::add_group *ui;
+    cannot_change * changes;
 };
 
 #endif // ADD_GROUP_H

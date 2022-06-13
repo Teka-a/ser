@@ -5,6 +5,8 @@
 #include "back_func.h"
 #include "wrong_form.h"
 #include "exists_form.h"
+#include <QRegularExpression>
+#include <QRegularExpressionMatch>
 namespace Ui {
 class AuthForm;
 }

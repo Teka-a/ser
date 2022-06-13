@@ -84,7 +84,7 @@ AuthForm::~AuthForm()
 void AuthForm::success_log_as_student()
 {
     hide();
-    get_student();
+    //get_student();
     emit logged_in_success_as_student();
 }
 
@@ -133,26 +133,35 @@ void AuthForm::on_pushButton_ok_clicked()
     QString log = ui->lineEdit_1log->text();
     QString pass = ui->lineEdit_2pass->text();
     if(ui->lineEdit_3email->isVisible()){
+
         QString mymail = ui->lineEdit_3email->text();
-        QString name = ui->lineEdit_4name->text();
-        QString surname = ui->lineEdit_5surname->text();
-        if (log == "" || pass == "" || mymail == "" || name == "" || surname == ""
-                ||log.length() > 100 || pass.length() > 100 || mymail.length() > 100 || name.length() > 100 || surname.length() > 100){
-            clean();
+        QRegularExpression re("@");
+        QRegularExpressionMatch match = re.match(mymail);
+        if(match.hasMatch()){
+            QString name = ui->lineEdit_4name->text();
+            QString surname = ui->lineEdit_5surname->text();
+            if (log == "" || pass == "" || mymail == "" || name == "" || surname == ""
+                    ||log.length() > 100 || pass.length() > 100 || mymail.length() > 100 || name.length() > 100 || surname.length() > 100){
+                clean();
+            }
+            else{
+                //connect (this, reg_student(), this, reg);
+                if (ui->radioButton_teacher->isChecked()){
+                    reg(log, pass, mymail, "teacher", name, surname);
+                }
+                else if (ui->radioButton_student->isChecked()){
+                    reg(log, pass, mymail, "student", name, surname);
+                }
+                else if (!&AuthForm::on_radioButton_student_clicked && !&AuthForm::on_radioButton_teacher_clicked){
+                    not_success_reg();
+                }
+                send_signal("reg");
+            }
         }
         else{
-            //connect (this, reg_student(), this, reg);
-            if (ui->radioButton_teacher->isChecked()){
-                reg(log, pass, mymail, "teacher", name, surname);
-            }
-            else if (ui->radioButton_student->isChecked()){
-                reg(log, pass, mymail, "student", name, surname);
-            }
-            else if (!&AuthForm::on_radioButton_student_clicked && !&AuthForm::on_radioButton_teacher_clicked){
-                not_success_reg();
-            }
-            send_signal("reg");
+            clean();
         }
+
     }else{
         if (log == "" || pass == ""){
             clean();

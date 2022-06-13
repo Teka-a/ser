@@ -25,6 +25,8 @@ myfunctions::~myfunctions()
     */
 }
 
+
+
 /**
  * @brief конструктор для открытия базы данных
  */
@@ -33,6 +35,7 @@ myfunctions::myfunctions()
     singleton_db *db = singleton_db::getInstance();
 
 }
+
 /**
  * @brief 1. Выполняем запрос по поиску имени пользователя в базе данных.
  * 2. Сравниваем полученное имя пользователя и пароль, введённые пользователем, со значениями в базе данных. Если совпадает, статус = "Welcome! ",
@@ -94,7 +97,7 @@ QString myfunctions::reg(QString login, QString password, QString email, QString
     QString log_from_db, pass_from_db, email_from_db, status_from_db, name_from_db, surname_from_db;
     query.prepare("SELECT * FROM User "
                "WHERE login == :login");
-    query.bindValue(":login",login);
+    query.bindValue(":login", login);
     query.exec();
 
     QSqlRecord rec = query.record();
@@ -358,6 +361,39 @@ QString myfunctions::get_info(QString group){
     return status;
 }
 
+QString myfunctions::check_student(QString login){
+    QString gr, st;
+    QString status = "ok";
+    singleton_db *db = singleton_db::getInstance();
+    QSqlQuery query;
+    query.prepare("SELECT group_num FROM groups "
+                  "WHERE p1 == :login OR p2 == :login OR p3 == :login OR p4 == :login OR p5 == :login OR p6 == :login OR p7 == :login OR p8 == :login OR p9 == :login");
+    query.bindValue(":login", login);
+    query.exec();
+    QSqlRecord rec = query.record();
+    qDebug() << rec;
+    const int groupIndex = rec.indexOf("group_num");
+
+    while(query.next())
+        gr = query.value(groupIndex).toString();
+
+    if (gr != ""){
+        status = "no";
+    }
+    query.prepare("SELECT * FROM User "
+               "WHERE login == :login");
+    query.bindValue(":login",login);
+    query.exec();
+    QSqlRecord rec1 = query.record();
+    const int statusIndex = rec.indexOf("status");
+    while(query.next())
+        st = query.value(statusIndex).toString();
+    if(st != "student"){
+        status = "no";
+    }
+    return status;
+}
+
 //в группу добавляются логины
 QString myfunctions::add_group(QString group_num, QString log_p1, QString log_p2, QString log_p3,
                                QString log_p4, QString log_p5, QString log_p6, QString log_p7,
@@ -365,8 +401,8 @@ QString myfunctions::add_group(QString group_num, QString log_p1, QString log_p2
     singleton_db *db = singleton_db::getInstance();
     QString status = "probably has been updated";
     QString group_from_db;
+    QMap<int,QString> ind {{1,log_p1}, {2,log_p2}, {3,log_p3}, {4,log_p4}, {5,log_p5}, {6,log_p6}, {7,log_p7}, {8,log_p8}, {9,log_p9}};
     QSqlQuery query;
-    //добавить проверку наличия номера группы в бд. Если есть - удалить предыдущую запись и вставить новую
     query.prepare("SELECT * FROM groups "
                   "WHERE group_num == :group_num");
     query.bindValue(":group_num", group_num);
@@ -377,11 +413,23 @@ QString myfunctions::add_group(QString group_num, QString log_p1, QString log_p2
     while(query.next())
         group_from_db = query.value(groupIndex).toString();
     if (group_from_db == group_num){
-        query.prepare("DELETE FROM groups "
-                      "WHERE group_num == :group_num");
-        query.bindValue(":group_num", group_num);
-        query.exec();
+        if (check_access(group_num) == "allowed"){
+            query.prepare("DELETE FROM groups "
+                          "WHERE group_num == :group_num");
+            query.bindValue(":group_num", group_num);
+            query.exec();
+        }
+        else if (check_access(group_num) == "not allowed"){
+            return "you cannot change group!";
+        }
     }
+
+    for (int i = 1; i < 10; ++i){
+        if(check_student(ind.value(i)) == "no"){
+            return "one of student exists";
+        }
+    }
+
     query.prepare("INSERT INTO groups(group_num, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10) "
                       "VALUES (:group_num, :p1, :p2, :p3, :p4, :p5, :p6, :p7, :p8, :p9, :p10)");
     query.bindValue(":group_num", group_num);
