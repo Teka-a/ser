@@ -135,7 +135,7 @@ void AuthForm::on_pushButton_ok_clicked()
     if(ui->lineEdit_3email->isVisible()){
 
         QString mymail = ui->lineEdit_3email->text();
-        QRegularExpression re("@");
+        QRegularExpression re("@"".");
         QRegularExpressionMatch match = re.match(mymail);
         if(match.hasMatch()){
             QString name = ui->lineEdit_4name->text();

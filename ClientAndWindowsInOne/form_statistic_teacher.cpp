@@ -25,12 +25,13 @@ Form_statistic_teacher::~Form_statistic_teacher()
 
 void Form_statistic_teacher::pars(QString data){
     ui->tableWidget->setVisible(true);
+    ui->tableWidget->clear();
     QStringList list = data.split("Q", QString::SplitBehavior::SkipEmptyParts);
     for (int j = 0; j < list.size(); ++j){
         QStringList now = list[j].split("&", QString::SplitBehavior::SkipEmptyParts);
         //qDebug() << j << now;
         for (int i = 0; i < now.size(); ++i){
-            //qDebug() << now[i];
+            qDebug() << now[i];
             ui->tableWidget->setItem(j, i, new QTableWidgetItem(now[i]));
 
         }

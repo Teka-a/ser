@@ -15,6 +15,7 @@ void auth(QString log, QString pass);
  * @param pass
  * @param email
  */
+
 void reg(QString log, QString pass, QString email, QString status, QString name, QString surname);
 /**
  * @brief Функция обновления статистики после решения заданий
@@ -22,6 +23,7 @@ void reg(QString log, QString pass, QString email, QString status, QString name,
  * @param upd
  */
 void upd_stat(int n, QString upd);
+
 void get_log(QString name, QString surname);
 void get_stat(int n);
 void new_group(QString group_num, QString n1, QString s1, QString n2, QString s2, QString n3, QString s3, QString n4, QString s4,
@@ -52,6 +54,7 @@ QVector<QString> solve_task3(QString input);
  * @param input
  * @return Текст задания 1
  */
+
 QString gen_text_for_task1(QString input);
 /**
  * @brief Функция генерации задания для номера 2
@@ -92,9 +95,10 @@ bool check_task(int task_num, QVector<QString> ans, QString input);
 
 void check_access(QString group_num);
 void get_info(QString group);
+
+
 void get_student();
 void get_teacher();
 void get_group();
-//QString tell_inf();
 
 #endif // BACK_FUNC_H

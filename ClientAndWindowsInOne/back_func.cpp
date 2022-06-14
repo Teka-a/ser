@@ -96,7 +96,7 @@ void get_group(){
     client::getInstance()->sendToServer(res);
 }
 
-
+//arceniy
 /**
  * @brief автоматическое решение задания 1
  * @param input
@@ -123,7 +123,7 @@ QVector<QString> solve_task1(QString input){
     qDebug() << "answer solve1" << con;
     return con;
 }
-
+//lisa
 /**
  * @brief автоматическое решение задания 2
  * @param input
@@ -151,7 +151,7 @@ QVector<QString> solve_task2(QString input){
 
     return con;
 }
-
+//katya
 /**
  * @brief автоматическое решение задания 3
  * @param input
@@ -301,7 +301,7 @@ QString gen_task3(){
  * @param input
  */
 bool check_task(int task_num, QVector<QString> ans, QString input){
-    QVector<QString> solution;
+    QVector<QString> solution, answer;
 
     switch(task_num) {
     case 1:{
@@ -310,8 +310,11 @@ bool check_task(int task_num, QVector<QString> ans, QString input){
         break;
     }
     case 2:{
-        for(int j = 0; j < ans.size(); ++j){
-            solution.push_back(ans[j]);
+        int size = ans.size();
+        solution = solve_task2(input);
+
+        for(int j = 0; j < size; ++j){
+            answer.push_front(ans[j]);
         }
 
         break;
@@ -323,7 +326,7 @@ bool check_task(int task_num, QVector<QString> ans, QString input){
     }
     }
 
-     if(ans == solution){
+     if(ans == solution || answer == solution){
          upd_stat(task_num, "+");
          return true;
      }
