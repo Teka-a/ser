@@ -107,8 +107,8 @@ void add_group::on_pushButton_clicked()
         bool flag = true;
         for (int i = 1; i <= 9; ++i){
             for(int j = i+1; j <= 10; ++j){
-                qDebug() << i << "names" << names.value(i) << "and" << names.value(j);
-                qDebug() << "surnames" << surnames.value(i) << "and" << surnames.value(j);
+                //qDebug() << i << "names" << names.value(i) << "and" << names.value(j);
+                //qDebug() << "surnames" << surnames.value(i) << "and" << surnames.value(j);
                 if (names.value(i) == names.value(j) && surnames.value(i) == surnames.value(j) && names.value(i) != " " && surnames.value(j) != " "){
                     qDebug() << "same thing";
                     flag = false;

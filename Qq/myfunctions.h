@@ -5,7 +5,7 @@
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QSqlRecord>
-
+#include <QCryptographicHash>
 #include "singleton_db.h"
 
 
@@ -41,8 +41,8 @@ public:
 
     QString updStat(QString name, QString task_num, QString status_of_task);
     QString get_stat (QString task_num);
-    QString encrypt(QString toEncrypt);
-    QString decrypt(QString toDecrypt);
+    QString encrypt(QString toEncrypt, quint32 key);
+    QString decrypt(QString toDecrypt, quint32 key);
     QString add_group(QString group_num, QString log_p1, QString log_p2, QString log_p3,
                       QString log_p4, QString log_p5, QString log_p6, QString log_p7,
                       QString log_p8, QString log_p9, QString teacher);

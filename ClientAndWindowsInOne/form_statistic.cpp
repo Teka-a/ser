@@ -40,16 +40,19 @@ void form_statistic::put_teacher(QString teach){
 
 void form_statistic::put_group(QString gr){
     ui->label_group->setText(gr);
+    get_stat(1);
 }
 
 void form_statistic::task1(){
-    qDebug() << "2";
+    //qDebug() << "2";
     ui->label_task_1->setText("+");
+    get_stat(2);
 
 }
 
 void form_statistic::task2(){
     ui->label_task_2->setText("+");
+    get_stat(3);
 }
 
 void form_statistic::task3(){
@@ -58,11 +61,13 @@ void form_statistic::task3(){
 
 void form_statistic::n_task1(){
     ui->label_task_1->setText("-");
+    get_stat(2);
 
 }
 
 void form_statistic::n_task2(){
     ui->label_task_2->setText("-");
+    get_stat(3);
 
 }
 
